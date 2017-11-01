@@ -6,7 +6,7 @@ Written by AA
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 ClosedCube Limited
+Copyright (c) 2015-2017 ClosedCube Limited
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -402,7 +402,6 @@ SHT31D_ErrorCode ClosedCube_SHT31D::read(uint16_t* data, uint8_t numOfPair)
 
 	const uint8_t numOfBytes = numOfPair * 3;
 
-	Wire.beginTransmission(_address);
 	Wire.requestFrom(_address, numOfBytes);
 
 	int counter = 0;
@@ -423,8 +422,6 @@ SHT31D_ErrorCode ClosedCube_SHT31D::read(uint16_t* data, uint8_t numOfPair)
 
 		data[counter] = (buf[0] << 8) | buf[1];
 	}
-
-	Wire.endTransmission();
 
 	return NO_ERROR;
 }
