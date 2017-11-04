@@ -1,5 +1,6 @@
 ##################################################################
-# Syntax Coloring Map For ClosedCube SHT31-D [Digital I2C] Humidity and Temperature Sensor Breakout  Library
+# Syntax Coloring Map For ClosedCube SHT31-D [Digital] Humidity and Temperature Sensor Breakout  Library
+# Support SHT30-D, SHT31-D and SHT35-D sensors
 ##################################################################
 
 ##################################################################

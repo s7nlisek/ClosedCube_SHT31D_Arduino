@@ -36,24 +36,22 @@ ClosedCube_SHT31D::ClosedCube_SHT31D()
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::begin(uint8_t address) {
-	SHT31D_ErrorCode error = NO_ERROR;
+	SHT31D_ErrorCode error = SHT3XD_NO_ERROR;
 	_address = address;
-	Wire.begin();
-
 	return error;
 }
 
 SHT31D ClosedCube_SHT31D::periodicFetchData()
 {
-	SHT31D_ErrorCode error = writeCommand(CMD_FETCH_DATA);
-	if (error == NO_ERROR)
+	SHT31D_ErrorCode error = writeCommand(SHT3XD_CMD_FETCH_DATA);
+	if (error == SHT3XD_NO_ERROR)
 		return readTemperatureAndHumidity();
 	else
 		returnError(error);
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::periodicStop() {
-	return writeCommand(CMD_STOP_PERIODIC);
+	return writeCommand(SHT3XD_CMD_STOP_PERIODIC);
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::periodicStart(SHT31D_Repeatability repeatability, SHT31D_Frequency frequency)
@@ -62,80 +60,82 @@ SHT31D_ErrorCode ClosedCube_SHT31D::periodicStart(SHT31D_Repeatability repeatabi
 
 	switch (repeatability)
 	{
-	case REPEATABILITY_LOW:
+	case SHT3XD_REPEATABILITY_LOW:
 		switch (frequency)
 		{
-		case FREQUENCY_HZ5:
-			error = writeCommand(CMD_PERIODIC_HALF_L);
+		case SHT3XD_FREQUENCY_HZ5:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_HALF_L);
 			break;
-		case FREQUENCY_1HZ:
-			error = writeCommand(CMD_PERIODIC_1_L);
+		case SHT3XD_FREQUENCY_1HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_1_L);
 			break;
-		case FREQUENCY_2HZ:
-			error = writeCommand(CMD_PERIODIC_2_L);
+		case SHT3XD_FREQUENCY_2HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_2_L);
 			break;
-		case FREQUENCY_4HZ:
-			error = writeCommand(CMD_PERIODIC_4_L);
+		case SHT3XD_FREQUENCY_4HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_4_L);
 			break;
-		case FREQUENCY_10HZ:
-			error = writeCommand(CMD_PERIODIC_10_L);
+		case SHT3XD_FREQUENCY_10HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_10_L);
 			break;
 		default:
-			error = PARAM_WRONG_FREQUENCY;
+			error = SHT3XD_PARAM_WRONG_FREQUENCY;
 			break;
 		}
 		break;
-	case REPEATABILITY_MEDIUM:
+	case SHT3XD_REPEATABILITY_MEDIUM:
 		switch (frequency)
 		{
-		case FREQUENCY_HZ5:
-			error = writeCommand(CMD_PERIODIC_HALF_M);
+		case SHT3XD_FREQUENCY_HZ5:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_HALF_M);
 			break;
-		case FREQUENCY_1HZ:
-			error = writeCommand(CMD_PERIODIC_1_M);
+		case SHT3XD_FREQUENCY_1HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_1_M);
 			break;
-		case FREQUENCY_2HZ:
-			error = writeCommand(CMD_PERIODIC_2_M);
+		case SHT3XD_FREQUENCY_2HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_2_M);
 			break;
-		case FREQUENCY_4HZ:
-			error = writeCommand(CMD_PERIODIC_4_M);
+		case SHT3XD_FREQUENCY_4HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_4_M);
 			break;
-		case FREQUENCY_10HZ:
-			error = writeCommand(CMD_PERIODIC_10_M);
+		case SHT3XD_FREQUENCY_10HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_10_M);
 			break;
 		default:
-			error = PARAM_WRONG_FREQUENCY;
+			error = SHT3XD_PARAM_WRONG_FREQUENCY;
 			break;
 		}
 		break;
 
-	case REPEATABILITY_HIGH:
+	case SHT3XD_REPEATABILITY_HIGH:
 		switch (frequency)
 		{
-		case FREQUENCY_HZ5:
-			error = writeCommand(CMD_PERIODIC_HALF_H);
+		case SHT3XD_FREQUENCY_HZ5:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_HALF_H);
 			break;
-		case FREQUENCY_1HZ:
-			error = writeCommand(CMD_PERIODIC_1_H);
+		case SHT3XD_FREQUENCY_1HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_1_H);
 			break;
-		case FREQUENCY_2HZ:
-			error = writeCommand(CMD_PERIODIC_2_H);
+		case SHT3XD_FREQUENCY_2HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_2_H);
 			break;
-		case FREQUENCY_4HZ:
-			error = writeCommand(CMD_PERIODIC_4_H);
+		case SHT3XD_FREQUENCY_4HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_4_H);
 			break;
-		case FREQUENCY_10HZ:
-			error = writeCommand(CMD_PERIODIC_10_H);
+		case SHT3XD_FREQUENCY_10HZ:
+			error = writeCommand(SHT3XD_CMD_PERIODIC_10_H);
 			break;
 		default:
-			error = PARAM_WRONG_FREQUENCY;
+			error = SHT3XD_PARAM_WRONG_FREQUENCY;
 			break;
 		}
 		break;
 	default:
-		error = PARAM_WRONG_REPEATABILITY;
+		error = SHT3XD_PARAM_WRONG_REPEATABILITY;
 		break;
 	}
+
+	delay(100);
 
 	return error;
 }
@@ -145,14 +145,14 @@ SHT31D ClosedCube_SHT31D::readTempAndHumidity(SHT31D_Repeatability repeatability
 	SHT31D result;
 
 	switch (mode) {
-	case MODE_CLOCK_STRETCH:
+	case SHT3XD_MODE_CLOCK_STRETCH:
 		result = readTempAndHumidityClockStretch(repeatability);
 		break;
-	case MODE_POLLING:
+	case SHT3XD_MODE_POLLING:
 		result = readTempAndHumidityPolling(repeatability, timeout);
 		break;
 	default:
-		result = returnError(PARAM_WRONG_MODE);
+		result = returnError(SHT3XD_PARAM_WRONG_MODE);
 		break;
 	}
 
@@ -162,29 +162,30 @@ SHT31D ClosedCube_SHT31D::readTempAndHumidity(SHT31D_Repeatability repeatability
 
 SHT31D ClosedCube_SHT31D::readTempAndHumidityClockStretch(SHT31D_Repeatability repeatability)
 {
-	SHT31D_ErrorCode error = NO_ERROR;
+	SHT31D_ErrorCode error = SHT3XD_NO_ERROR;
 	SHT31D_Commands command;
 
 	switch (repeatability)
 	{
-	case REPEATABILITY_LOW:
-		error = writeCommand(CMD_CLOCK_STRETCH_L);
+	case SHT3XD_REPEATABILITY_LOW:
+		error = writeCommand(SHT3XD_CMD_CLOCK_STRETCH_L);
 		break;
-	case REPEATABILITY_MEDIUM:
-		error = writeCommand(CMD_CLOCK_STRETCH_M);
+	case SHT3XD_REPEATABILITY_MEDIUM:
+		error = writeCommand(SHT3XD_CMD_CLOCK_STRETCH_M);
 		break;
-	case REPEATABILITY_HIGH:
-		error = writeCommand(CMD_CLOCK_STRETCH_H);
+	case SHT3XD_REPEATABILITY_HIGH:
+		error = writeCommand(SHT3XD_CMD_CLOCK_STRETCH_H);
 		break;
 	default:
-		error = PARAM_WRONG_REPEATABILITY;
+		error = SHT3XD_PARAM_WRONG_REPEATABILITY;
 		break;
 	}
 
-	if (error == NO_ERROR) {
+	delay(50);
+
+	if (error == SHT3XD_NO_ERROR) {
 		return readTemperatureAndHumidity();
-	}
-	else {
+	} else {
 		return returnError(error);
 	}
 
@@ -193,63 +194,64 @@ SHT31D ClosedCube_SHT31D::readTempAndHumidityClockStretch(SHT31D_Repeatability r
 
 SHT31D ClosedCube_SHT31D::readTempAndHumidityPolling(SHT31D_Repeatability repeatability, uint8_t timeout)
 {
-	SHT31D_ErrorCode error = NO_ERROR;
+	SHT31D_ErrorCode error = SHT3XD_NO_ERROR;
 	SHT31D_Commands command;
 
 	switch (repeatability)
 	{
-	case REPEATABILITY_LOW:
-		error = writeCommand(CMD_POLLING_L);
+	case SHT3XD_REPEATABILITY_LOW:
+		error = writeCommand(SHT3XD_CMD_POLLING_L);
 		break;
-	case REPEATABILITY_MEDIUM:
-		error = writeCommand(CMD_POLLING_M);
+	case SHT3XD_REPEATABILITY_MEDIUM:
+		error = writeCommand(SHT3XD_CMD_POLLING_M);
 		break;
-	case REPEATABILITY_HIGH:
-		error = writeCommand(CMD_POLLING_H);
+	case SHT3XD_REPEATABILITY_HIGH:
+		error = writeCommand(SHT3XD_CMD_POLLING_H);
 		break;
 	default:
-		error = PARAM_WRONG_REPEATABILITY;
+		error = SHT3XD_PARAM_WRONG_REPEATABILITY;
 		break;
 	}
 
-	if (error == NO_ERROR) {
+	delay(50);
+
+	if (error == SHT3XD_NO_ERROR) {
 		return readTemperatureAndHumidity();
-	}
-	else {
+	} else {
 		return returnError(error);
 	}
 
 }
 
 SHT31D ClosedCube_SHT31D::readAlertHighSet() {
-	return readAlertData(CMD_READ_ALR_LIMIT_HS);
+	return readAlertData(SHT3XD_CMD_READ_ALR_LIMIT_HS);
 }
 
 SHT31D ClosedCube_SHT31D::readAlertHighClear() {
-	return readAlertData(CMD_READ_ALR_LIMIT_HC);
+	return readAlertData(SHT3XD_CMD_READ_ALR_LIMIT_HC);
 }
 
 SHT31D ClosedCube_SHT31D::readAlertLowSet() {
-	return readAlertData(CMD_READ_ALR_LIMIT_LS);
+	return readAlertData(SHT3XD_CMD_READ_ALR_LIMIT_LS);
 }
 
 SHT31D ClosedCube_SHT31D::readAlertLowClear() {
-	return readAlertData(CMD_READ_ALR_LIMIT_LC);
+	return readAlertData(SHT3XD_CMD_READ_ALR_LIMIT_LC);
 }
 
 
 SHT31D_ErrorCode ClosedCube_SHT31D::writeAlertHigh(float temperatureSet, float temperatureClear, float humiditySet, float humidityClear) {
-	SHT31D_ErrorCode error = writeAlertData(CMD_WRITE_ALR_LIMIT_HS, temperatureSet, humiditySet);
-	if (error == NO_ERROR)
-		error = writeAlertData(CMD_WRITE_ALR_LIMIT_HC, temperatureClear, humidityClear);
+	SHT31D_ErrorCode error = writeAlertData(SHT3XD_CMD_WRITE_ALR_LIMIT_HS, temperatureSet, humiditySet);
+	if (error == SHT3XD_NO_ERROR)
+		error = writeAlertData(SHT3XD_CMD_WRITE_ALR_LIMIT_HC, temperatureClear, humidityClear);
 
 	return error;
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::writeAlertLow(float temperatureClear, float temperatureSet, float humidityClear, float humiditySet) {
-	SHT31D_ErrorCode error = writeAlertData(CMD_WRITE_ALR_LIMIT_LS, temperatureSet, humiditySet);
-	if (error == NO_ERROR)
-		writeAlertData(CMD_WRITE_ALR_LIMIT_LC, temperatureClear, humidityClear);
+	SHT31D_ErrorCode error = writeAlertData(SHT3XD_CMD_WRITE_ALR_LIMIT_LS, temperatureSet, humiditySet);
+	if (error == SHT3XD_NO_ERROR)
+		writeAlertData(SHT3XD_CMD_WRITE_ALR_LIMIT_LC, temperatureClear, humidityClear);
 
 	return error;
 }
@@ -260,9 +262,8 @@ SHT31D_ErrorCode ClosedCube_SHT31D::writeAlertData(SHT31D_Commands command, floa
 
 	if ((humidity < 0.0) || (humidity > 100.0) || (temperature < -40.0) || (temperature > 125.0))
 	{
-		error = PARAM_WRONG_ALERT;
-	}
-	else
+		error = SHT3XD_PARAM_WRONG_ALERT;
+	} else
 	{
 		uint16_t rawTemperature = calculateRaWTemperature(temperature);
 		uint16_t rawHumidity = calculateRawHumidity(humidity);
@@ -296,7 +297,7 @@ SHT31D_ErrorCode ClosedCube_SHT31D::writeCommand(SHT31D_Commands command)
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::softReset() {
-	return writeCommand(CMD_SOFT_RESET);
+	return writeCommand(SHT3XD_CMD_SOFT_RESET);
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::generalCallReset() {
@@ -306,25 +307,25 @@ SHT31D_ErrorCode ClosedCube_SHT31D::generalCallReset() {
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::heaterEnable() {
-	return writeCommand(CMD_HEATER_ENABLE);
+	return writeCommand(SHT3XD_CMD_HEATER_ENABLE);
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::heaterDisable() {
-	return writeCommand(CMD_HEATER_DISABLE);
+	return writeCommand(SHT3XD_CMD_HEATER_DISABLE);
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::artEnable() {
-	return writeCommand(CMD_ART);
+	return writeCommand(SHT3XD_CMD_ART);
 }
 
 
 uint32_t ClosedCube_SHT31D::readSerialNumber()
 {
-	uint32_t result = NO_ERROR;
+	uint32_t result = SHT3XD_NO_ERROR;
 	uint16_t buf[2];
 
-	if (writeCommand(CMD_READ_SERIAL_NUMBER) == NO_ERROR) {
-		if (read(buf, 2) == NO_ERROR) {
+	if (writeCommand(SHT3XD_CMD_READ_SERIAL_NUMBER) == SHT3XD_NO_ERROR) {
+		if (read(buf, 2) == SHT3XD_NO_ERROR) {
 			result = (buf[0] << 16) | buf[1];
 		}
 	}
@@ -336,15 +337,15 @@ SHT31D_RegisterStatus ClosedCube_SHT31D::readStatusRegister()
 {
 	SHT31D_RegisterStatus result;
 
-	SHT31D_ErrorCode error = writeCommand(CMD_READ_STATUS);
-	if (error == NO_ERROR)
+	SHT31D_ErrorCode error = writeCommand(SHT3XD_CMD_READ_STATUS);
+	if (error == SHT3XD_NO_ERROR)
 		error = read(&result.rawData, 1);
 
 	return result;
 }
 
 SHT31D_ErrorCode ClosedCube_SHT31D::clearAll() {
-	return writeCommand(CMD_CLEAR_STATUS);
+	return writeCommand(SHT3XD_CMD_CLEAR_STATUS);
 }
 
 
@@ -358,10 +359,10 @@ SHT31D ClosedCube_SHT31D::readTemperatureAndHumidity()
 	SHT31D_ErrorCode error;
 	uint16_t buf[2];
 
-	if (error == NO_ERROR)
+	if (error == SHT3XD_NO_ERROR)
 		error = read(buf, 2);
 
-	if (error == NO_ERROR) {
+	if (error == SHT3XD_NO_ERROR) {
 		result.t = calculateTemperature(buf[0]);
 		result.rh = calculateHumidity(buf[1]);
 	}
@@ -382,10 +383,10 @@ SHT31D ClosedCube_SHT31D::readAlertData(SHT31D_Commands command)
 
 	error = writeCommand(command);
 
-	if (error == NO_ERROR)
+	if (error == SHT3XD_NO_ERROR)
 		error = read(buf, 1);
 
-	if (error == NO_ERROR) {
+	if (error == SHT3XD_NO_ERROR) {
 		result.rh = calculateHumidity(buf[0] << 7);
 		result.t = calculateTemperature(buf[0] & 0xFE00);
 	}
@@ -401,29 +402,21 @@ SHT31D_ErrorCode ClosedCube_SHT31D::read(uint16_t* data, uint8_t numOfPair)
 	uint8_t checksum;
 
 	const uint8_t numOfBytes = numOfPair * 3;
-
 	Wire.requestFrom(_address, numOfBytes);
 
 	int counter = 0;
-	while (Wire.available() < numOfBytes)
-	{
-		counter++;
-		delay(50);
-		if (counter > 100)
-			return TIMEOUT_ERROR;
-	}
 
 	for (counter = 0; counter < numOfPair; counter++) {
 		Wire.readBytes(buf, (uint8_t)2);
 		checksum = Wire.read();
 
 		if (checkCrc(buf, checksum) != 0)
-			return CRC_ERROR;
+			return SHT3XD_CRC_ERROR;
 
 		data[counter] = (buf[0] << 8) | buf[1];
 	}
 
-	return NO_ERROR;
+	return SHT3XD_NO_ERROR;
 }
 
 
