@@ -34,7 +34,7 @@ Note: The library supports SHT30-D (low-cost) and SHT35-D (high-end) sensor vers
 
 - **SHT35-D** with SF2 filter cap  http://www.ebay.co.uk/itm/182501935370
 - **SHT31-D** with SF2 filter cap (rev.7/16) http://www.ebay.co.uk/itm/182260364404
-- SHT31-D (rev. 9/15) http://www.ebay.co.uk/itm/182877251201
+- SHT31-D (rev. 9/15) http://www.ebay.co.uk/itm/181894936524
 - SHT31-D (rev. 9/15) pre-soldered right-angle http://www.ebay.co.uk/itm/182116692919
 
 [![](http://images.closedcube.uk/logo/github/tindie.png)](https://www.tindie.com/stores/closedcube/)
