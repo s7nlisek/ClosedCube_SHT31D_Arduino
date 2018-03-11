@@ -159,6 +159,8 @@ public:
 	SHT31D_ErrorCode heaterDisable();
 
 	SHT31D_ErrorCode softReset();
+	SHT31D_ErrorCode reset(); // same as softReset
+
 	SHT31D_ErrorCode generalCallReset();
 
 	SHT31D_ErrorCode artEnable();
@@ -196,7 +198,7 @@ private:
 	float calculateTemperature(uint16_t rawValue);
 
 	uint16_t calculateRawHumidity(float value);
-	uint16_t calculateRaWTemperature(float value);
+	uint16_t calculateRawTemperature(float value);
 
 	SHT31D readTemperatureAndHumidity();
 	SHT31D readAlertData(SHT31D_Commands command);

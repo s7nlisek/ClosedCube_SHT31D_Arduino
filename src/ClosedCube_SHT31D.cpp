@@ -41,6 +41,11 @@ SHT31D_ErrorCode ClosedCube_SHT31D::begin(uint8_t address) {
 	return error;
 }
 
+SHT31D_ErrorCode ClosedCube_SHT31D::reset()
+{
+	return  softReset();
+}
+
 SHT31D ClosedCube_SHT31D::periodicFetchData()
 {
 	SHT31D_ErrorCode error = writeCommand(SHT3XD_CMD_FETCH_DATA);
@@ -265,7 +270,7 @@ SHT31D_ErrorCode ClosedCube_SHT31D::writeAlertData(SHT31D_Commands command, floa
 		error = SHT3XD_PARAM_WRONG_ALERT;
 	} else
 	{
-		uint16_t rawTemperature = calculateRaWTemperature(temperature);
+		uint16_t rawTemperature = calculateRawTemperature(temperature);
 		uint16_t rawHumidity = calculateRawHumidity(humidity);
 		uint16_t data = (rawHumidity & 0xFE00) | ((rawTemperature >> 7) & 0x001FF);
 
@@ -379,16 +384,17 @@ SHT31D ClosedCube_SHT31D::readAlertData(SHT31D_Commands command)
 	result.rh = 0;
 
 	SHT31D_ErrorCode error;
-	uint16_t buf[1];
+	
+	uint16_t buf;
 
 	error = writeCommand(command);
 
 	if (error == SHT3XD_NO_ERROR)
-		error = read(buf, 1);
+		error = read(&buf, 1);
 
 	if (error == SHT3XD_NO_ERROR) {
-		result.rh = calculateHumidity(buf[0] << 7);
-		result.t = calculateTemperature(buf[0] & 0xFE00);
+		result.rh = calculateHumidity(buf & 0xFE00);
+		result.t = calculateTemperature(buf << 7);
 	}
 
 	result.error = error;
@@ -436,7 +442,7 @@ float ClosedCube_SHT31D::calculateHumidity(uint16_t rawValue)
 	return 100.0f * rawValue / 65535.0f;
 }
 
-uint16_t ClosedCube_SHT31D::calculateRaWTemperature(float value)
+uint16_t ClosedCube_SHT31D::calculateRawTemperature(float value)
 {
 	return (value + 45.0f) / 175.0f * 65535.0f;
 }
