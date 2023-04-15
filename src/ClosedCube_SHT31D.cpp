@@ -187,7 +187,7 @@ SHT31D ClosedCube_SHT31D::readTempAndHumidityClockStretch(SHT31D_Repeatability r
 
 	delay(50);
 
-	if (error =! SHT3XD_NO_ERROR) 
+	if (error != SHT3XD_NO_ERROR) 
 		return returnError(error);
 	
 	return readTemperatureAndHumidity();
